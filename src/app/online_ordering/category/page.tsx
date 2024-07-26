@@ -17,7 +17,7 @@ const category = () => {
           </div>
           <div className="flex flex-col gap-5 py-5">
             <div className="w-full h-[185px] relative">
-              <div className="bg-[#0000008e] absolute top-0 w-full h-full left-0"></div>
+              <div className="bg-[#9efeb98a] absolute top-0 w-full h-full left-0"></div>
               <Image className="w-full h-full object-cover" src={cat_img} alt="onload img" />
               <p className="absolute top-[50%] left-[50%] transform text-xl font-semibold text-white">Morning</p>
             </div>
@@ -32,7 +32,7 @@ const category = () => {
               <p className="absolute top-[50%] left-[50%] transform text-xl font-semibold text-white">Dinner</p>
             </div>
           </div>
-          <Link href={"/online_ordering/category"}>
+          <Link href={"/online_ordering/select_meals"}>
             <button className="bg-[#2F52A0] py-4 w-full text-white font-semibold text-xl">Order</button>
           </Link>
         </div>
