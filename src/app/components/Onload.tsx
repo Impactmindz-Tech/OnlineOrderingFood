@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import onloadImg from "../../assests/Screenshot 2024-07-26 101943.png";
 import Image from "next/image";
 import Link from "next/link";
 
 const Onload = () => {
+
   return (
     <section className="hero_section">
       <div className="page_width h-full">
@@ -18,7 +19,7 @@ const Onload = () => {
           </div>
           <div>
             <h2 className="text-[#2F52A0] font-medium text-center">Build and Order you own meals</h2>
-            <Link href={'/online_ordering'} className="pt-8">
+            <Link href={"/online_ordering"} className="pt-8">
               <button className="bg-[#2F52A0] py-4 w-full text-white font-semibold text-xl">Let’s Start</button>
             </Link>
           </div>

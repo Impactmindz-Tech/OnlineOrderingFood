@@ -1,16 +1,23 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import onloadImg from "../../assests/white_logo.png";
 import alert_img from "../../assests/aleert.png";
 import location_imgs from "../../assests/test.png";
 import Image from "next/image";
 import Link from "next/link";
+import "leaflet/dist/leaflet.css";
+
+import MapComponent from "../components/mapcomponents/MapComponent";
+import SearchComponent from "../components/SearchComponent/SearchComponent";
+
 
 const onlineOrdering = () => {
+    const [selectPosition ,setSelectPosition] = useState(null)
   return (
     <section className="main-bg">
       <div className="page_width">
         <div>
-        <div className="flex justify-center h-full p-10">
+          <div className="flex justify-center h-full p-10">
             <Image width={200} height={100} src={onloadImg} alt="onload img" />
           </div>
           <div className="">
@@ -24,6 +31,12 @@ const onlineOrdering = () => {
             </div>
             <div className="bg-[#ded4c4] text-center py-4">
               <button className="text-2xl text-[#3E3939] font-semibold">Auto-Complete SelectBox</button>
+              <SearchComponent selectPosition={selectPosition} setSelectPosition={setSelectPosition} />
+              <div className="h-screen">
+              <MapComponent selectPosition={selectPosition} />
+              </div>
+              {/* {currentPosition && (
+              )} */}
             </div>
             <p className="text-[#5663FF] text-xl font-bold text-center pt-3">I Rather use my Name</p>
           </div>

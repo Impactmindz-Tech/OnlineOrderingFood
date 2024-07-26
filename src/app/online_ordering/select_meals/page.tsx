@@ -58,46 +58,6 @@ const SwiperSlider = () => {
               </div>
             </div>
           </SwiperSlide>
-          <SwiperSlide>
-            <div className="text-center mt-10">
-              <h1 className="text-white text-4xl font-semibold">Cereal Type</h1>
-              <p className="text-white">Choose One</p>
-              <div className="flex flex-wrap gap-3 pt-14">
-                <div className="flex flex-col w-[48%]">
-                  <img className="w-full" src="https://static.vecteezy.com/system/resources/thumbnails/017/340/364/small_2x/white-cup-of-tea-png.png" alt="" />
-                  <h1 className="text-black text-4xl font-semibold">Tea</h1>
-                </div>
-                <div className="flex flex-col w-[48%]">
-                  <img className="" src="https://static.vecteezy.com/system/resources/thumbnails/017/340/364/small_2x/white-cup-of-tea-png.png" alt="" />
-                  <h1 className="text-black text-4xl font-semibold">Tea</h1>
-                </div>
-                <div className="flex flex-col w-[48%]">
-                  <img className="" src="https://static.vecteezy.com/system/resources/thumbnails/017/340/364/small_2x/white-cup-of-tea-png.png" alt="" />
-                  <h1 className="text-black text-4xl font-semibold">Tea</h1>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="text-center mt-10">
-              <h1 className="text-white text-4xl font-semibold">Cereal Type</h1>
-              <p className="text-white">Choose One</p>
-              <div className="flex flex-wrap gap-3 pt-14">
-                <div className="flex flex-col w-[48%]">
-                  <img className="w-full" src="https://static.vecteezy.com/system/resources/thumbnails/017/340/364/small_2x/white-cup-of-tea-png.png" alt="" />
-                  <h1 className="text-black text-4xl font-semibold">Tea</h1>
-                </div>
-                <div className="flex flex-col w-[48%]">
-                  <img className="" src="https://static.vecteezy.com/system/resources/thumbnails/017/340/364/small_2x/white-cup-of-tea-png.png" alt="" />
-                  <h1 className="text-black text-4xl font-semibold">Tea</h1>
-                </div>
-                <div className="flex flex-col w-[48%]">
-                  <img className="" src="https://static.vecteezy.com/system/resources/thumbnails/017/340/364/small_2x/white-cup-of-tea-png.png" alt="" />
-                  <h1 className="text-black text-4xl font-semibold">Tea</h1>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
         </Swiper>
       </div>
     </section>

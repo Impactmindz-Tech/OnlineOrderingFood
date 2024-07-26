@@ -28,20 +28,20 @@ const viewMeals = () => {
         <div className="pt-10">
           <h1 className="bg-[#eadecf] p-3 rounded-lg">The Location</h1>
           <div className="pt-5">
-            <input type="checkbox" name="" id="" />
-            <label className="pl-2" htmlFor="">
+            <input type="checkbox" name="Tomorrow" id="Tomorrow" />
+            <label className="pl-2" htmlFor="Tomorrow">
               Tomorrow
             </label>
           </div>
           <div className="pt-5">
-            <input type="checkbox" name="" id="" />
-            <label className="pl-2" htmlFor="">
+            <input type="checkbox" name="Week" id="Week" />
+            <label className="pl-2" htmlFor="Week">
               The Rest of this Week
             </label>
           </div>
           <div className="pt-5">
-            <input type="checkbox" name="" id="" />
-            <label className="pl-2" htmlFor="">
+            <input type="checkbox" name="Staying" id="Staying" />
+            <label className="pl-2" htmlFor="Staying">
               All My Staying
             </label>
           </div>
