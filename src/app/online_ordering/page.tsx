@@ -32,9 +32,9 @@ const onlineOrdering = () => {
             <div className="bg-[#ded4c4] text-center py-4">
               <button className="text-2xl text-[#3E3939] font-semibold">Auto-Complete SelectBox</button>
               <SearchComponent selectPosition={selectPosition} setSelectPosition={setSelectPosition} />
-              <div className="h-screen">
+              {/* <div className="h-screen">
               <MapComponent selectPosition={selectPosition} />
-              </div>
+              </div> */}
               {/* {currentPosition && (
               )} */}
             </div>

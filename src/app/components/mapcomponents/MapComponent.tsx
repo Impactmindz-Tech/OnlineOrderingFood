@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
@@ -18,31 +18,37 @@ L.Icon.Default.mergeOptions({
 
 const position = [51.505, -0.09];
 
-function ResentCenterView(props) {
-    const { selectPosition } = props;
+function RecentCenterView(props) {
+  const { selectPosition } = props;
   const map = useMap();
 
   useEffect(() => {
     if (selectPosition) {
-      map.setView(L.latlng(selectPosition?.lat, selectPosition?.lon), map.getZoom(), {
+      map.setView(L.latLng(selectPosition?.lat, selectPosition?.lon), map.getZoom(), {
         animate: true,
       });
     }
-  }, [selectPosition]);
+  }, [selectPosition, map]);
 
   return null;
 }
 
 const MapComponent = (props) => {
-    const { selectPosition } = props;
-    const locationSelection = [selectPosition?.lat , selectPosition?.lon]
+  const { selectPosition } = props;
+  const locationSelection = selectPosition ? [selectPosition?.lat, selectPosition?.lon] : position;
+
   return (
     <MapContainer center={position} zoom={13} style={{ height: "100%", width: "100%" }}>
-      <TileLayer url="https://api.maptiler.com/maps/basic/256/{z}/{x}/{y}.png?key=eA3MBleCC9aTtUBJHL6C" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
-      <Marker position={locationSelection} icon={icon}>
-        <Popup>You are here</Popup>
-      </Marker>
-      <ResentCenterView selectPosition={selectPosition} />
+      <TileLayer
+        url="https://api.maptiler.com/maps/basic/256/{z}/{x}/{y}.png?key=eA3MBleCC9aTtUBJHL6C"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      />
+      {selectPosition && (
+        <Marker position={locationSelection} icon={icon}>
+          <Popup>You are here</Popup>
+        </Marker>
+      )}
+      <RecentCenterView selectPosition={selectPosition} />
     </MapContainer>
   );
 };
