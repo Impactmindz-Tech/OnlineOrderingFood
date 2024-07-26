@@ -42,7 +42,7 @@ body {
 
 
 .hero_section{
-  background: url("https://as1.ftcdn.net/v2/jpg/07/47/32/96/1000_F_747329650_L0BZ2tdP9jxElKNRjaUH0shIcDivQaAK.jpg");
+  background: url("../assests/onload_img.png");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -61,4 +61,11 @@ body {
 
 .transform{
   transform: translate(-50% ,-50%);
+}
+
+.swiper-pagination {
+  top: 0 !important;
+  z-index: 1;
+  position: absolute !important;
+  bottom: unset !important;
 }

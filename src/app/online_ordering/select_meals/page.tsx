@@ -3,7 +3,8 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import onloadImg from "../../../assests/white_logo.png";
 import Image from "next/image";
-import Link from "next/link";
+import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import "swiper/css/pagination";
 
 const SwiperSlider = () => {
   return (
@@ -15,9 +16,9 @@ const SwiperSlider = () => {
         <div className="">
           <button className="text-[#fff] bg-[#ded4c4] p-3 rounded-xl font-bold">Back</button>
         </div>
-        <Swiper slidesPerView={1}>
+        <Swiper modules={[Navigation, Pagination, Scrollbar, A11y]} pagination={{ clickable: true }} slidesPerView={1}>
           <SwiperSlide>
-            <div className="text-center">
+            <div className="text-center mt-10">
               <h1 className="text-white text-4xl font-semibold">Cereal Type</h1>
               <p className="text-white">Choose One</p>
               <div className="flex flex-wrap gap-3 pt-14">
@@ -38,7 +39,7 @@ const SwiperSlider = () => {
             {/* <img src="https://themewagon.github.io/delfood/images/slider-img3.png" alt="" /> */}
           </SwiperSlide>
           <SwiperSlide>
-            <div className="text-center">
+            <div className="text-center mt-10">
               <h1 className="text-white text-4xl font-semibold">Cereal Type</h1>
               <p className="text-white">Choose One</p>
               <div className="flex flex-wrap gap-3 pt-14">
@@ -56,12 +57,9 @@ const SwiperSlider = () => {
                 </div>
               </div>
             </div>
-            <Link href={"/online_ordering/category"}>
-              <button className="bg-[#2F52A0] py-4 w-full text-white font-semibold text-xl">Next</button>
-            </Link>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="text-center">
+            <div className="text-center mt-10">
               <h1 className="text-white text-4xl font-semibold">Cereal Type</h1>
               <p className="text-white">Choose One</p>
               <div className="flex flex-wrap gap-3 pt-14">
@@ -79,12 +77,9 @@ const SwiperSlider = () => {
                 </div>
               </div>
             </div>
-            <Link href={"/online_ordering/category"}>
-              <button className="bg-[#2F52A0] py-4 w-full text-white font-semibold text-xl">Next</button>
-            </Link>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="text-center">
+            <div className="text-center mt-10">
               <h1 className="text-white text-4xl font-semibold">Cereal Type</h1>
               <p className="text-white">Choose One</p>
               <div className="flex flex-wrap gap-3 pt-14">
@@ -102,9 +97,6 @@ const SwiperSlider = () => {
                 </div>
               </div>
             </div>
-            <Link href={"/online_ordering/category"}>
-              <button className="bg-[#2F52A0] py-4 w-full text-white font-semibold text-xl">Next</button>
-            </Link>
           </SwiperSlide>
         </Swiper>
       </div>
