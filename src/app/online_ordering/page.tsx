@@ -10,13 +10,15 @@ const onlineOrdering = () => {
     <section className="main-bg">
       <div className="page_width">
         <div>
-          <Image layout="responsive" width={1920} height={1080} src={onloadImg} alt="onload img" />
-          <div className="pt-10">
+        <div className="flex justify-center h-full p-10">
+            <Image width={200} height={100} src={onloadImg} alt="onload img" />
+          </div>
+          <div className="">
             <h1 className="text-[#fff] text-4xl font-bold">
               So Where Are <br /> you at?
             </h1>
           </div>
-          <div className="text-center">
+          <div className="text-center pt-14">
             <div className="text-center flex justify-center">
               <Image width={100} height={100} src={alert_img} alt="onload img" />
             </div>
@@ -25,7 +27,7 @@ const onlineOrdering = () => {
             </div>
             <p className="text-[#5663FF] text-xl font-bold text-center pt-3">I Rather use my Name</p>
           </div>
-          <div className="flex justify-center py-8">
+          <div className="flex justify-center py-8 pt-32">
             <Image width={200} height={200} src={location_imgs} alt="onload img" />
           </div>
           <Link href={"/online_ordering/category"}>
