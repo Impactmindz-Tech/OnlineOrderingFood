@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -8,18 +8,26 @@ const icon = L.icon({
   iconSize: [38, 38],
 });
 
-// Fix default icon issues with Next.js and Leaflet
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
-});
+// Extend the L.Icon.Default class to set the default options
+class DefaultIcon extends L.Icon.Default {
+  constructor() {
+    super();
+    this.options.iconRetinaUrl = "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png";
+    this.options.iconUrl = "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png";
+    this.options.shadowUrl = "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png";
+  }
+}
 
-const position = [51.505, -0.09];
+// Apply the extended default icon options
+L.Icon.Default.prototype = new DefaultIcon();
 
-function RecentCenterView(props) {
-  const { selectPosition } = props;
+const position: [number, number] = [51.505, -0.09];
+
+interface RecentCenterViewProps {
+  selectPosition: any;
+}
+
+const RecentCenterView: React.FC<RecentCenterViewProps> = ({ selectPosition }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -33,9 +41,12 @@ function RecentCenterView(props) {
   return null;
 }
 
-const MapComponent = (props) => {
-  const { selectPosition } = props;
-  const locationSelection = selectPosition ? [selectPosition?.lat, selectPosition?.lon] : position;
+interface MapComponentProps {
+  selectPosition: any;
+}
+
+const MapComponent: React.FC<MapComponentProps> = ({ selectPosition }) => {
+  const locationSelection: [number, number] = selectPosition ? [parseFloat(selectPosition?.lat), parseFloat(selectPosition?.lon)] : position;
 
   return (
     <MapContainer center={position} zoom={13} style={{ height: "100%", width: "100%" }}>

@@ -9,28 +9,39 @@ import ListItemText from "@mui/material/ListItemText";
 
 const NOMINATIM_BASE_URL = "https://nominatim.openstreetmap.org/search?";
 
-const SearchComponent = (props) => {
-  const { selectPosition, setSelectPosition } = props;
-  const [searchText, setSearchText] = useState("");
-  const [listPlace, setListPlace] = useState([]);
+interface SearchComponentProps {
+  selectPosition: any;
+  setSelectPosition: React.Dispatch<React.SetStateAction<any>>;
+}
+
+interface Place {
+  place_id: string;
+  lat: string;
+  lon: string;
+  display_name: string;
+}
+
+const SearchComponent: React.FC<SearchComponentProps> = ({ selectPosition, setSelectPosition }) => {
+  const [searchText, setSearchText] = useState<string>("");
+  const [listPlace, setListPlace] = useState<Place[]>([]);
 
   const handleSearch = () => {
     const params = {
       q: searchText,
       format: "json",
-      addressdetails: 1,
-      polygon_geojson: 0,
+      addressdetails: "1",
+      polygon_geojson: "0",
     };
     const queryString = new URLSearchParams(params).toString();
-    const requestOptions = {
+    const requestOptions: RequestInit = {
       method: "GET",
-      redirect: "follow",
+      redirect: "follow" as RequestRedirect,
     };
 
     fetch(`${NOMINATIM_BASE_URL}${queryString}`, requestOptions)
       .then((response) => response.text())
       .then((result) => {
-        const places = JSON.parse(result);
+        const places: Place[] = JSON.parse(result);
         console.log(places);
         setListPlace(places);
       })
@@ -39,7 +50,11 @@ const SearchComponent = (props) => {
 
   return (
     <>
-      <OutlinedInput value={searchText} placeholder="Auto-Complete SelectBox" onChange={(e) => setSearchText(e.target.value)} />
+      <OutlinedInput
+        value={searchText}
+        placeholder="Auto-Complete SelectBox"
+        onChange={(e) => setSearchText(e.target.value)}
+      />
       <Button variant="contained" color="primary" onClick={handleSearch}>
         Search
       </Button>
