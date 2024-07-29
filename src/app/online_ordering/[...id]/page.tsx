@@ -1,9 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import onloadImg from "../../../assests/white_logo.png";
 import Image from "next/image";
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { Pagination } from "swiper/modules";
 import "swiper/css/pagination";
 import CategoryModels from "@/app/modal/CategoryModels";
 import { collection, getDocs } from "firebase/firestore";
@@ -72,7 +72,7 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
         <div className="">
           <button className="text-[#fff] bg-[#ded4c4] p-3 rounded-xl font-bold">Back</button>
         </div>
-        <Swiper modules={[Navigation, Pagination, Scrollbar, A11y]} pagination={{ clickable: true }} slidesPerView={1}>
+        <Swiper autoHeight={true} modules={[Pagination]} pagination={{ clickable: true }} slidesPerView={1}>
           {category
             ?.filter((cat) => cat?.Category == params?.id)
             ?.map((item) => {
