@@ -9,7 +9,6 @@ import CategoryModels from "@/app/modal/CategoryModels";
 
 const category = () => {
   const [category, setCategory] = useState<CategoryModels[]>([]);
-  const [id, setId] = useState<string>("");
 
   const fetchCategory = async () => {
     try {
@@ -26,7 +25,6 @@ const category = () => {
       console.log(error);
     }
   };
-
 
   useEffect(() => {
     fetchCategory();

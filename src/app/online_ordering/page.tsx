@@ -6,12 +6,13 @@ import "leaflet/dist/leaflet.css";
 import location_imgs from "../../assests/test.png";
 import alert_img from "../../assests/aleert.png";
 import onloadImg from "../../assests/white_logo.png";
-
 import MapComponent from "../components/mapcomponents/MapComponent";
 import SearchComponent from "../components/SearchComponent/SearchComponent";
+import { setInLocalStorage } from "../utills/LocalStorageUtills";
 
 const OnlineOrdering: React.FC = () => {
   const [selectPosition, setSelectPosition] = useState<any>(null);
+  setInLocalStorage("location", selectPosition);
 
   return (
     <section className="main-bg">

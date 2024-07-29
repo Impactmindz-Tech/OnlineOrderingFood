@@ -24,6 +24,7 @@ interface Place {
 const SearchComponent: React.FC<SearchComponentProps> = ({ selectPosition, setSelectPosition }) => {
   const [searchText, setSearchText] = useState<string>("");
   const [listPlace, setListPlace] = useState<Place[]>([]);
+  const [mainPlace, setMainPlace] = useState<Place[]>([]);
 
   const handleSearch = () => {
     const params = {
@@ -64,7 +65,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ selectPosition, setSe
             button
             key={item.place_id}
             onClick={() => {
-              console.log(item); // Log the selected item
+              // console.log(item , 'saoini'); // Log the selected item
               setSelectPosition(item);
             }}
           >
