@@ -8,11 +8,11 @@ import "swiper/css/pagination";
 import CategoryModels from "@/app/modal/CategoryModels";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/app/config/firebase";
-import ProductsModels from "@/app/modal/ProductModels";
 import { useDispatch, useSelector } from "react-redux";
 import { addCategory, addProduct, addToCart } from "@/app/store/slice/ProductSlice";
 import CheckIcon from "@mui/icons-material/Check";
 import { RootState } from "@/app/store/Store";
+import { ProductsModels } from "@/app/modal/ProductModels";
 
 interface SwiperSliderProps {
   params: { id: string };
