@@ -1,4 +1,4 @@
-import ProductsModels from "@/app/modal/ProductModels";
+import { ProductsModels } from "@/app/modal/ProductModels";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CartState {
