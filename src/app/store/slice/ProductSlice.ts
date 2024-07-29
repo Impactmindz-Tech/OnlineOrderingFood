@@ -1,9 +1,10 @@
+import CategoryModels from "@/app/modal/CategoryModels";
 import { ProductsModels } from "@/app/modal/ProductModels";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CartState {
   products: ProductsModels[];
-  category: ProductsModels[];
+  category: CategoryModels[];
   cart: ProductsModels[];
 }
 
@@ -20,7 +21,7 @@ const ProductSlice = createSlice({
     addProduct: (state, action: PayloadAction<ProductsModels[]>) => {
       state.products = action.payload;
     },
-    addCategory: (state, action: PayloadAction<ProductsModels[]>) => {
+    addCategory: (state, action: PayloadAction<CategoryModels[]>) => {
       state.category = action.payload;
     },
     addToCart: (state, action: PayloadAction<ProductsModels>) => {
