@@ -3,6 +3,7 @@ export default interface ProductsModels {
     ImageUrl: string;
     Name: string;
     category:string;
+    Category:string
     Description:string;
     meal:string
   }
