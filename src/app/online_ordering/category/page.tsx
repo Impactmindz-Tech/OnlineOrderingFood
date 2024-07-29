@@ -1,10 +1,36 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import onloadImg from "../../../assests/white_logo.png";
-import cat_img from "../../../assests/cat_img.webp";
 import Image from "next/image";
 import Link from "next/link";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/app/config/firebase";
+import CategoryModels from "@/app/modal/CategoryModels";
 
 const category = () => {
+  const [category, setCategory] = useState<CategoryModels[]>([]);
+  const [id, setId] = useState<string>("");
+
+  const fetchCategory = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "Meals"));
+      const categoryList: CategoryModels[] = querySnapshot.docs.map((doc) => {
+        const data = doc.data() as CategoryModels;
+        return {
+          ...data,
+          id: doc.id,
+        };
+      });
+      setCategory(categoryList);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchCategory();
+  }, []);
   return (
     <section className="main-bg">
       <div className="page_width h-full">
@@ -15,26 +41,20 @@ const category = () => {
           <div className="">
             <button className="text-[#fff] bg-[#ded4c4] p-3 rounded-xl font-bold">Back</button>
           </div>
-          <div className="flex flex-col gap-5 py-5">
-            <div className="w-full h-[185px] relative">
-              <div className="bg-[#9efeb98a] absolute top-0 w-full h-full left-0"></div>
-              <Image className="w-full h-full object-cover" src={cat_img} alt="onload img" />
-              <p className="absolute top-[50%] left-[50%] transform text-xl font-semibold text-white">Morning</p>
-            </div>
-            <div className="w-full h-[185px] relative">
-              <div className="bg-[#0000008e] absolute top-0 w-full h-full left-0"></div>
-              <Image className="w-full h-full object-cover" src={cat_img} alt="onload img" />
-              <p className="absolute top-[50%] left-[50%] transform text-xl font-semibold text-white">Lunch</p>
-            </div>
-            <div className="w-full h-[185px] relative">
-              <div className="bg-[#0000008e] absolute top-0 w-full h-full left-0"></div>
-              <Image className="w-full h-full object-cover" src={cat_img} alt="onload img" />
-              <p className="absolute top-[50%] left-[50%] transform text-xl font-semibold text-white">Dinner</p>
-            </div>
-          </div>
-          <Link href={"/online_ordering/select_meals"}>
-            <button className="bg-[#2F52A0] py-4 w-full text-white font-semibold text-xl">Order</button>
-          </Link>
+          {category?.map((item, index) => {
+            return (
+              <Link href={`/online_ordering/${item?.Name}`}>
+                <div key={index} className="flex flex-col gap-5 py-5">
+                  <div className="w-full h-[185px] relative">
+                    {/* <div className="bg-[#9efeb98a] absolute top-0 w-full h-full left-0"></div> */}
+                    <div className="bg-[#00000083] absolute top-0 w-full h-full left-0"></div>
+                    <img className="object-cover w-full h-full" src={item?.ImageUrl} alt="category image" />
+                    <p className="absolute top-[50%] left-[50%] transform text-xl font-semibold text-white">{item?.Name}</p>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>
