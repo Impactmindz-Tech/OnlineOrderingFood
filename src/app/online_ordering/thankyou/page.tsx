@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import onloadImg from "../../assests/Screenshot 2024-07-26 101943.png";
+import onloadImg from "../../../assests/Screenshot 2024-07-26 101943.png";
 import Image from "next/image";
 import Link from "next/link";
 
-const Onload = () => {
+const Thankyou = () => {
+
   return (
     <section className="hero_section">
       <div className="page_width h-full">
@@ -28,4 +29,4 @@ const Onload = () => {
   );
 };
 
-export default Onload;
+export default Thankyou;

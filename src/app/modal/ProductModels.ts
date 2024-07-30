@@ -4,5 +4,6 @@ export interface ProductsModels {
   Name: string;
   ImageUrl: string;
   Description?: string; // Optional
+  meal:string
   // Add other properties if needed
 }
