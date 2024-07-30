@@ -41,7 +41,7 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
       });
       dispatch(addCategory(categoryList));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -57,19 +57,27 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
       });
       dispatch(addProduct(productList));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const handleAddToCart = (product: ProductsModels) => {
     dispatch(addToCart(product));
-    setCategorySelection((prev) => ({
-      ...prev,
-      [product.category]: true,
-    }));
+    setCategorySelection((prev) => {
+      const updatedSelection = {
+        ...prev,
+        [product.category]: true,
+      };
+      localStorage.setItem("categorySelection", JSON.stringify(updatedSelection));
+      return updatedSelection;
+    });
   };
 
-  const allCategoriesSelected = Object.keys(categorySelection).length === category.length;
+  const allCategoriesSelected = () => {
+    const categorySet = new Set(category.map((cat) => cat.Name));
+    const selectedSet = new Set(Object.keys(categorySelection));
+    return categorySet.size === selectedSet.size;
+  };
 
   const handleSlideChange = () => {
     if (swiper) {
@@ -80,6 +88,10 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
   useEffect(() => {
     fetchCategory();
     fetchProduct();
+    const storedSelection = localStorage.getItem("categorySelection");
+    if (storedSelection) {
+      setCategorySelection(JSON.parse(storedSelection));
+    }
   }, []);
 
   return (
@@ -91,7 +103,14 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
         <div className="">
           <button className="text-[#fff] bg-[#ded4c4] p-3 rounded-xl font-bold">Back</button>
         </div>
-        <Swiper autoHeight={true} modules={[Pagination]} pagination={{ clickable: true }} slidesPerView={1} onSwiper={(swiperInstance) => setSwiper(swiperInstance)} onSlideChange={handleSlideChange}>
+        <Swiper
+          autoHeight={true}
+          modules={[Pagination]}
+          pagination={{ clickable: true }}
+          slidesPerView={1}
+          onSwiper={(swiperInstance) => setSwiper(swiperInstance)}
+          onSlideChange={handleSlideChange}
+        >
           {category
             ?.filter((cat) => cat?.Category == params?.id)
             ?.map((item) => (
@@ -118,17 +137,18 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
                       })}
                   </div>
                   {isLastSlide && (
-                    <Link href={"/online_ordering/category"}>
-                      <div className="bg-[red] p-4 mt-5">
-                        <button>Next</button>
-                      </div>
-                    </Link>
+                    <div className="bg-[#2f52a0] p-4 mt-5">
+                      {allCategoriesSelected() ? (
+                        <Link href={"/online_ordering/summery"}>
+                          <button>Order</button>
+                        </Link>
+                      ) : (
+                        <Link href={"/online_ordering/category"}>
+                          <button>Next</button>
+                        </Link>
+                      )}
+                    </div>
                   )}
-                  {/* <Link href={"/online_ordering/summery"}>
-                      <div className="bg-[red] p-4 mt-5">
-                        <button>Next</button>
-                      </div>
-                    </Link> */}
                 </div>
               </SwiperSlide>
             ))}

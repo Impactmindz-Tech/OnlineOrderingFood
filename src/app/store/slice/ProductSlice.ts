@@ -1,7 +1,7 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { getFromLocalStorage, setInLocalStorage } from "@/app/utills/LocalStorageUtills";
 import CategoryModels from "@/app/modal/CategoryModels";
 import { ProductsModels } from "@/app/modal/ProductModels";
-import { getFromLocalStorage, setInLocalStorage } from "@/app/utills/LocalStorageUtills";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CartState {
   products: ProductsModels[];
@@ -31,11 +31,15 @@ const ProductSlice = createSlice({
         state.cart = state.cart.filter((item) => item.category !== action.payload.category);
       }
       state.cart.push(action.payload);
-      setInLocalStorage('cart', state.cart)
+      setInLocalStorage('cart', state.cart);
+    },
+    resetCart: (state) => {
+      state.cart = [];
+      localStorage.clear()
     },
   },
 });
 
-export const { addToCart, addCategory, addProduct } = ProductSlice.actions;
+export const { addToCart, addCategory, addProduct, resetCart } = ProductSlice.actions;
 
 export default ProductSlice;

@@ -4,14 +4,17 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import onloadImg from "../../../assests/white_logo.png";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store/Store";
 import { ProductsModels } from "@/app/modal/ProductModels";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/app/config/firebase";
 import { useRouter } from "next/navigation";
+import { resetCart } from "@/app/store/slice/ProductSlice";
+import { getFromLocalStorage } from "@/app/utills/LocalStorageUtills";
 
 const ViewMeals: React.FC = () => {
+  const dispatch = useDispatch()
   const router = useRouter()
   const [groupedByMeal, setGroupedByMeal] = useState<Record<string, ProductsModels[]>>({});
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: boolean }>({
@@ -50,10 +53,12 @@ const ViewMeals: React.FC = () => {
      await setDoc(doc(db, "Orders", Date.now().toString()), {
         body: {
           sechudle:selectedOptions,
-          summery:summery
+          summery:summery,
+          location:getFromLocalStorage("location") ? getFromLocalStorage("location")?.address : null
         },
       });
       router.push("/online_ordering/thankyou")
+      dispatch(resetCart())
     } catch (error) {
       console.error("An error occurred", error);
     }
