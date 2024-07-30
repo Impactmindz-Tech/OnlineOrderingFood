@@ -65,14 +65,13 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ selectPosition, setSe
             button
             key={item.place_id}
             onClick={() => {
-              // console.log(item , 'saoini'); // Log the selected item
+              console.log(item , 'saoini'); // Log the selected item
               setSelectPosition(item);
             }}
           >
             <ListItemButton>
-              <ListItemIcon>
-                <img src="" alt="dsdsd" />
-              </ListItemIcon>
+              {/* <ListItemIcon>
+              </ListItemIcon> */}
               <ListItemText primary={item.display_name} />
             </ListItemButton>
           </ListItem>

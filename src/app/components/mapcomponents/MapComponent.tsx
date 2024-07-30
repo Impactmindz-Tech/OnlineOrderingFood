@@ -3,10 +3,10 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
-const icon = L.icon({
-  iconUrl: "/public/locate.jpg",
-  iconSize: [38, 38],
-});
+// const icon = L.icon({
+//   iconUrl: "../../../assests/placeholder.jpg",
+//   iconSize: [38, 38],
+// });
 
 // Extend the L.Icon.Default class to set the default options
 class DefaultIcon extends L.Icon.Default {
@@ -55,7 +55,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ selectPosition }) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       {selectPosition && (
-        <Marker position={locationSelection} icon={icon}>
+        <Marker position={locationSelection}>
           <Popup>You are here</Popup>
         </Marker>
       )}
