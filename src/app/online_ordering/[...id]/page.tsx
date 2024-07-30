@@ -130,8 +130,8 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
                                 <CheckIcon sx={{ width: "100px", fontSize: "80px", fill: "white" }} />
                               </div>
                             )}
-                            <Image width={349} height={50} className="w-[349px] h-[232px]" src={prodctItem?.ImageUrl} alt="" />
-                            <h1 className="text-black text-4xl font-semibold">{prodctItem?.Name}</h1>
+                            <Image width={349} height={50} className="w-[349px] h-[132px] object-cover" src={prodctItem?.ImageUrl} alt="" />
+                            <h1 className="text-black text-xl mt-4 font-semibold">{prodctItem?.Name}</h1>
                           </div>
                         );
                       })}
