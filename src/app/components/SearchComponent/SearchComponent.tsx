@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+"use client"
+import React, { useState, useEffect } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import debounce from "lodash.debounce";
 
 const NOMINATIM_BASE_URL = "https://nominatim.openstreetmap.org/search?";
 
@@ -24,30 +25,35 @@ interface Place {
 const SearchComponent: React.FC<SearchComponentProps> = ({ selectPosition, setSelectPosition }) => {
   const [searchText, setSearchText] = useState<string>("");
   const [listPlace, setListPlace] = useState<Place[]>([]);
-  const [mainPlace, setMainPlace] = useState<Place[]>([]);
 
-  const handleSearch = () => {
+  const fetchPlaces = async (query: string) => {
+    if (!query) {
+      setListPlace([]);
+      return;
+    }
+
     const params = {
-      q: searchText,
+      q: query,
       format: "json",
       addressdetails: "1",
       polygon_geojson: "0",
     };
     const queryString = new URLSearchParams(params).toString();
-    const requestOptions: RequestInit = {
-      method: "GET",
-      redirect: "follow" as RequestRedirect,
-    };
 
-    fetch(`${NOMINATIM_BASE_URL}${queryString}`, requestOptions)
-      .then((response) => response.text())
-      .then((result) => {
-        const places: Place[] = JSON.parse(result);
-        console.log(places);
-        setListPlace(places);
-      })
-      .catch((error) => console.log(error));
+    try {
+      const response = await fetch(`${NOMINATIM_BASE_URL}${queryString}`);
+      const places: Place[] = await response.json();
+      setListPlace(places);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  const debouncedFetchPlaces = debounce(fetchPlaces, 300);
+
+  useEffect(() => {
+    debouncedFetchPlaces(searchText);
+  }, [searchText]);
 
   return (
     <>
@@ -56,22 +62,19 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ selectPosition, setSe
         placeholder="Auto-Complete SelectBox"
         onChange={(e) => setSearchText(e.target.value)}
       />
-      <Button variant="contained" color="primary" onClick={handleSearch}>
-        Search
-      </Button>
       <List>
         {listPlace.map((item) => (
           <ListItem
             button
             key={item.place_id}
             onClick={() => {
-              console.log(item , 'saoini'); // Log the selected item
+              console.log(item); // Log the selected item
               setSelectPosition(item);
+              setSearchText(item.display_name); // Set the input field with the selected item's display name
+              setListPlace([]); // Clear suggestions after selection
             }}
           >
             <ListItemButton>
-              {/* <ListItemIcon>
-              </ListItemIcon> */}
               <ListItemText primary={item.display_name} />
             </ListItemButton>
           </ListItem>

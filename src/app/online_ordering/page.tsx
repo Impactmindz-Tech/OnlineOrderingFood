@@ -6,13 +6,25 @@ import "leaflet/dist/leaflet.css";
 import location_imgs from "../../assests/test.png";
 import alert_img from "../../assests/aleert.png";
 import onloadImg from "../../assests/white_logo.png";
-import MapComponent from "../components/mapcomponents/MapComponent";
 import SearchComponent from "../components/SearchComponent/SearchComponent";
 import { setInLocalStorage } from "../utills/LocalStorageUtills";
+// import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const OnlineOrdering: React.FC = () => {
+  const router = useRouter();
   const [selectPosition, setSelectPosition] = useState<any>(null);
-  setInLocalStorage("location", selectPosition);
+  setInLocalStorage("location", selectPosition || null);
+  console.log(selectPosition, "tiridd");
+
+  const handleRoute = () => {
+    if (selectPosition) {
+      router.push("/online_ordering/category");
+    } else {
+      // toast.error("Please Select Location");
+      alert("Please Select Location")
+    }
+  };
 
   return (
     <section className="main-bg">
@@ -39,9 +51,11 @@ const OnlineOrdering: React.FC = () => {
           <div className="flex justify-center py-8 pt-32">
             <Image width={200} height={200} src={location_imgs} alt="onload img" />
           </div>
-          <Link href={"/online_ordering/category"}>
-            <button className="bg-[#2F52A0] py-4 w-full text-white font-semibold text-xl">Continue</button>
-          </Link>
+          {/* <Link href={"/online_ordering/category"}> */}
+          <button className="bg-[#2F52A0] py-4 w-full text-white font-semibold text-xl" onClick={handleRoute}>
+            Continue
+          </button>
+          {/* </Link> */}
         </div>
       </div>
     </section>
