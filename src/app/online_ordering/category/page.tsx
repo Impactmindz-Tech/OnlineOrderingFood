@@ -47,8 +47,6 @@ const Category: React.FC = () => {
 
   useEffect(() => {
     fetchCategory();
-    console.log("Products:", products);
-    console.log("Cart:", cart);
   }, [products, cart]);
 
   return (
