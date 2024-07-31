@@ -27,7 +27,6 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
   const category = useSelector((state: RootState) => state.Product.category);
   const product = useSelector((state: RootState) => state.Product.products);
   const cart = useSelector((state: RootState) => state.Product.cart);
-console.log(cart)
   const [swiper, setSwiper] = useState<any>(null);
   const [isLastSlide, setIsLastSlide] = useState(false);
 
