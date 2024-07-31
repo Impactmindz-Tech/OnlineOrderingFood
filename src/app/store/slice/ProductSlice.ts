@@ -6,13 +6,21 @@ import { ProductsModels } from "@/app/modal/ProductModels";
 interface CartState {
   products: ProductsModels[];
   category: CategoryModels[];
-  cart: ProductsModels[];
+  cart: {
+    breakfast: ProductsModels[];
+    lunch: ProductsModels[];
+    dinner: ProductsModels[];
+  };
 }
 
 const initialState: CartState = {
   products: [],
   category: [],
-  cart: getFromLocalStorage("cart") || [],
+  cart: {
+    breakfast: (typeof window !== 'undefined' ? getFromLocalStorage("cartBreakfast") : []) || [],
+    lunch: (typeof window !== 'undefined' ? getFromLocalStorage("cartLunch") : []) || [],
+    dinner: (typeof window !== 'undefined' ? getFromLocalStorage("cartDinner") : []) || [],
+  },
 };
 
 const ProductSlice = createSlice({
@@ -26,16 +34,25 @@ const ProductSlice = createSlice({
       state.category = action.payload;
     },
     addToCart: (state, action: PayloadAction<ProductsModels>) => {
-      const existingProduct = state.cart.find((item) => item.category === action.payload.category);
-      if (existingProduct) {
-        state.cart = state.cart.filter((item) => item.category !== action.payload.category);
-      }
-      state.cart.push(action.payload);
-      setInLocalStorage('cart', state.cart);
+      const mealType = action.payload.meal.toLowerCase();
+
+      state.cart[mealType] = state.cart[mealType].filter((item) => item.id !== action.payload.id);
+
+      state.cart[mealType].push(action.payload);
+
+      setInLocalStorage('cartBreakfast', state.cart.breakfast);
+      setInLocalStorage('cartLunch', state.cart.lunch);
+      setInLocalStorage('cartDinner', state.cart.dinner);
     },
     resetCart: (state) => {
-      state.cart = [];
-      localStorage.clear()
+      state.cart = {
+        breakfast: [],
+        lunch: [],
+        dinner: []
+      };
+      localStorage.removeItem('cartBreakfast');
+      localStorage.removeItem('cartLunch');
+      localStorage.removeItem('cartDinner');
     },
   },
 });

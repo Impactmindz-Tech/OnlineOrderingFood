@@ -103,14 +103,7 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
         <div className="">
           <button className="text-[#fff] bg-[#ded4c4] p-3 rounded-xl font-bold">Back</button>
         </div>
-        <Swiper
-          autoHeight={true}
-          modules={[Pagination]}
-          pagination={{ clickable: true }}
-          slidesPerView={1}
-          onSwiper={(swiperInstance) => setSwiper(swiperInstance)}
-          onSlideChange={handleSlideChange}
-        >
+        <Swiper autoHeight={true} modules={[Pagination]} pagination={{ clickable: true }} slidesPerView={1} onSwiper={(swiperInstance) => setSwiper(swiperInstance)} onSlideChange={handleSlideChange}>
           {category
             ?.filter((cat) => cat?.Category == params?.id)
             ?.map((item) => (
@@ -122,7 +115,7 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
                     {product
                       ?.filter((pro: ProductsModels) => pro?.category == item?.Name)
                       ?.map((prodctItem: ProductsModels) => {
-                        const isActive = cart.some((cartItem: ProductsModels) => cartItem.id === prodctItem.id);
+                        const isActive = cart[prodctItem.meal.toLowerCase()].some((cartItem: ProductsModels) => cartItem.id === prodctItem.id);
                         return (
                           <div key={`${prodctItem?.id}-pro`} className={`flex flex-col w-[48%] cursor-pointer relative`} onClick={() => handleAddToCart(prodctItem)}>
                             {isActive && (
