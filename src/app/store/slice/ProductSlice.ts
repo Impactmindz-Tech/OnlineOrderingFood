@@ -35,9 +35,7 @@ const ProductSlice = createSlice({
       const mealType: MealType = action.payload.meal.toLowerCase() as MealType; // Cast to MealType
       state.cart[mealType] = state.cart[mealType].filter((item) => item.category !== action.payload.category);
 
-      // Add the new product to the category
       state.cart[mealType].push(action.payload);
-      // Ensure only one product is selected per meal type
       // state.cart[mealType] = [action.payload];
 
       // Save cart data to localStorage
