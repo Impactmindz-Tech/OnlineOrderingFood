@@ -9,13 +9,16 @@ import CategoryModels from "@/app/modal/CategoryModels";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/Store";
 import CheckIcon from "@mui/icons-material/Check";
+import Loading from "@/app/components/loading/Loading";
 
 const Category: React.FC = () => {
   const [categories, setCategories] = useState<CategoryModels[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const cart = useSelector((state: RootState) => state.Product.cart);
   const products = useSelector((state: RootState) => state.Product.products);
 
   const fetchCategory = async () => {
+    setLoading(true);
     try {
       const querySnapshot = await getDocs(collection(db, "Meals"));
       const categoryList: CategoryModels[] = querySnapshot.docs.map((doc) => {
@@ -28,13 +31,14 @@ const Category: React.FC = () => {
       setCategories(categoryList);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const isCategoryComplete = (mealType: string) => {
     const categoryProducts = products.filter((product) => product.meal.toLowerCase() === mealType);
     const selectedProducts = cart[mealType as keyof typeof cart];
-
     const categories = Array.from(new Set(categoryProducts.map((product) => product.category)));
     const selectedCategories = Array.from(new Set(selectedProducts.map((product) => product.category)));
     const isComplete = categories.length > 0 && categories.every((category) => selectedCategories.includes(category));
@@ -48,38 +52,45 @@ const Category: React.FC = () => {
   }, [products, cart]);
 
   return (
-    <section className="main-bg">
-      <div className="page_width h-full">
-        <div className="h-full">
-          <div className="flex justify-center h-full p-10">
-            <Image width={200} height={100} src={onloadImg} alt="onload img" />
-          </div>
-          <div>
-            <button className="text-[#fff] bg-[#ded4c4] p-3 rounded-xl font-bold">Back</button>
-          </div>
-          {categories?.map((item) => {
-            const mealType = item?.Name.toLowerCase();
-            const isComplete = isCategoryComplete(mealType);
-            return (
-              <Link href={`/online_ordering/${item?.Name}`} key={item?.id}>
-                <div className="flex flex-col gap-5 py-5">
-                  <div className="w-full h-[185px] relative">
-                    <div className={`bg-[#00000083] absolute top-0 w-full h-full left-0 `}></div>
-                    {isComplete && (
-                      <div className="w-full h-full bg-[#9efeb98a] absolute flex items-center justify-center">
-                        <CheckIcon sx={{ width: "100px", fontSize: "80px", fill: "white" }} />
-                      </div>
-                    )}
-                    <img className="object-cover w-full h-full" src={item?.ImageUrl} alt="category image" />
-                    <p className={`absolute top-[50%] left-[50%] transform text-xl font-semibold text-white`}>{item?.Name}</p>
+    <>
+    {
+      loading && (
+        <Loading/>
+      )
+    }
+      <section className="main-bg">
+        <div className="page_width h-full">
+          <div className="h-full">
+            <div className="flex justify-center h-full p-10">
+              <Image width={200} height={100} src={onloadImg} alt="onload img" />
+            </div>
+            <div>
+              <button className="text-[#fff] bg-[#ded4c4] p-3 rounded-xl font-bold">Back</button>
+            </div>
+            {categories?.map((item) => {
+              const mealType = item?.Name.toLowerCase();
+              const isComplete = isCategoryComplete(mealType);
+              return (
+                <Link href={`/online_ordering/${item?.Name}`} key={item?.id}>
+                  <div className="flex flex-col gap-5 py-5">
+                    <div className="w-full h-[185px] relative">
+                      <div className={`bg-[#00000083] absolute top-0 w-full h-full left-0 `}></div>
+                      {isComplete && (
+                        <div className="w-full h-full bg-[#9efeb98a] absolute flex items-center justify-center">
+                          <CheckIcon sx={{ width: "100px", fontSize: "80px", fill: "white" }} />
+                        </div>
+                      )}
+                      <img className="object-cover w-full h-full" src={item?.ImageUrl} alt="category image" />
+                      <p className={`absolute top-[50%] left-[50%] transform text-xl font-semibold text-white`}>{item?.Name}</p>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            );
-          })}
+                </Link>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 

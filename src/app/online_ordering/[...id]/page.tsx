@@ -14,8 +14,9 @@ import CheckIcon from "@mui/icons-material/Check";
 import { RootState } from "@/app/store/Store";
 import { ProductsModels } from "@/app/modal/ProductModels";
 import Link from "next/link";
+import Loading from "@/app/components/loading/Loading";
 
-type MealType = 'breakfast' | 'lunch' | 'dinner';
+type MealType = "breakfast" | "lunch" | "dinner";
 
 interface SwiperSliderProps {
   params: { id: string };
@@ -29,8 +30,10 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
   const cart = useSelector((state: RootState) => state.Product.cart);
   const [swiper, setSwiper] = useState<any>(null);
   const [isLastSlide, setIsLastSlide] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fetchCategory = async () => {
+    setLoading(true);
     try {
       const querySnapshot = await getDocs(collection(db, "Category"));
       const categoryList: CategoryModels[] = querySnapshot.docs.map((doc) => {
@@ -43,10 +46,13 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
       dispatch(addCategory(categoryList));
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchProduct = async () => {
+    setLoading(true);
     try {
       const querySnapshot = await getDocs(collection(db, "Products"));
       const productList: ProductsModels[] = querySnapshot.docs.map((doc) => {
@@ -59,6 +65,8 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
       dispatch(addProduct(productList));
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -97,60 +105,63 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
   }, []);
 
   return (
-    <section className="main-bg">
-      <div className="page_width h-full">
-        <div className="flex justify-center h-full p-10">
-          <Image width={200} height={100} src={onloadImg} alt="onload img" />
-        </div>
-        <div className="">
-          <button className="text-[#fff] bg-[#ded4c4] p-3 rounded-xl font-bold">Back</button>
-        </div>
-        <Swiper autoHeight={true} modules={[Pagination]} pagination={{ clickable: true }} slidesPerView={1} onSwiper={(swiperInstance) => setSwiper(swiperInstance)} onSlideChange={handleSlideChange}>
-          {category
-            ?.filter((cat) => cat?.Category == params?.id)
-            ?.map((item) => (
-              <SwiperSlide key={`${item?.id}-cat`}>
-                <div className="text-center mt-10">
-                  <h1 className="text-white text-4xl font-semibold">{item?.Name}</h1>
-                  <p className="text-white">Choose One</p>
-                  <div className="flex flex-wrap gap-3 pt-14">
-                    {product
-                      ?.filter((pro: ProductsModels) => pro?.category == item?.Name)
-                      ?.map((prodctItem: ProductsModels) => {
-                        const mealType: MealType = prodctItem.meal.toLowerCase() as MealType; // Cast to MealType
-                        const isActive = cart[mealType].some((cartItem: ProductsModels) => cartItem.id === prodctItem.id);
-                        return (
-                          <div key={`${prodctItem?.id}-pro`} className={`flex flex-col w-[48%] cursor-pointer relative`} onClick={() => handleAddToCart(prodctItem)}>
-                            {isActive && (
-                              <div className="w-full h-full bg-[#9efeb98a] absolute flex items-center justify-center">
-                                <CheckIcon sx={{ width: "100px", fontSize: "80px", fill: "white" }} />
-                              </div>
-                            )}
-                            <Image width={349} height={50} className="w-[349px] h-[132px] object-cover" src={prodctItem?.ImageUrl} alt="" />
-                            <h1 className="text-black text-xl mt-4 font-semibold">{prodctItem?.Name}</h1>
-                          </div>
-                        );
-                      })}
-                  </div>
-                  {isLastSlide && (
-                    <div className="bg-[#2f52a0] p-4 mt-5">
-                      {allCategoriesSelected() ? (
-                        <Link href={"/online_ordering/summery"}>
-                          <button>Order</button>
-                        </Link>
-                      ) : (
-                        <Link href={"/online_ordering/category"}>
-                          <button>Next</button>
-                        </Link>
-                      )}
+    <>
+      {loading && <Loading />}
+      <section className="main-bg">
+        <div className="page_width h-full">
+          <div className="flex justify-center h-full p-10">
+            <Image width={200} height={100} src={onloadImg} alt="onload img" />
+          </div>
+          <div className="">
+            <button className="text-[#fff] bg-[#ded4c4] p-3 rounded-xl font-bold">Back</button>
+          </div>
+          <Swiper autoHeight={true} modules={[Pagination]} pagination={{ clickable: true }} slidesPerView={1} onSwiper={(swiperInstance) => setSwiper(swiperInstance)} onSlideChange={handleSlideChange}>
+            {category
+              ?.filter((cat) => cat?.Category == params?.id)
+              ?.map((item) => (
+                <SwiperSlide key={`${item?.id}-cat`}>
+                  <div className="text-center mt-10">
+                    <h1 className="text-white text-4xl font-semibold">{item?.Name}</h1>
+                    <p className="text-white">Choose One</p>
+                    <div className="flex flex-wrap gap-3 pt-14">
+                      {product
+                        ?.filter((pro: ProductsModels) => pro?.category == item?.Name)
+                        ?.map((prodctItem: ProductsModels) => {
+                          const mealType: MealType = prodctItem.meal.toLowerCase() as MealType; // Cast to MealType
+                          const isActive = cart[mealType].some((cartItem: ProductsModels) => cartItem.id === prodctItem.id);
+                          return (
+                            <div key={`${prodctItem?.id}-pro`} className={`flex flex-col w-[48%] cursor-pointer relative`} onClick={() => handleAddToCart(prodctItem)}>
+                              {isActive && (
+                                <div className="w-full h-full bg-[#9efeb98a] absolute flex items-center justify-center">
+                                  <CheckIcon sx={{ width: "100px", fontSize: "80px", fill: "white" }} />
+                                </div>
+                              )}
+                              <Image width={349} height={50} className="w-[349px] h-[132px] object-cover" src={prodctItem?.ImageUrl} alt="" />
+                              <h1 className="text-black text-xl mt-4 font-semibold">{prodctItem?.Name}</h1>
+                            </div>
+                          );
+                        })}
                     </div>
-                  )}
-                </div>
-              </SwiperSlide>
-            ))}
-        </Swiper>
-      </div>
-    </section>
+                    {isLastSlide && (
+                      <div className="bg-[#2f52a0] p-4 mt-5">
+                        {allCategoriesSelected() ? (
+                          <Link href={"/online_ordering/summery"}>
+                            <button>Order</button>
+                          </Link>
+                        ) : (
+                          <Link href={"/online_ordering/category"}>
+                            <button>Next</button>
+                          </Link>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </SwiperSlide>
+              ))}
+          </Swiper>
+        </div>
+      </section>
+    </>
   );
 };
 
