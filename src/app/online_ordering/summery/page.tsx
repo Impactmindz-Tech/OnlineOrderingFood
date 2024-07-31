@@ -40,6 +40,7 @@ const ViewMeals: React.FC = () => {
       });
       router.push("/online_ordering/thankyou");
       dispatch(resetCart());
+      localStorage.clear()
     } catch (error) {
       console.error("An error occurred", error);
     }
