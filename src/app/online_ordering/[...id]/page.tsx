@@ -15,6 +15,8 @@ import { RootState } from "@/app/store/Store";
 import { ProductsModels } from "@/app/modal/ProductModels";
 import Link from "next/link";
 
+type MealType = 'breakfast' | 'lunch' | 'dinner';
+
 interface SwiperSliderProps {
   params: { id: string };
 }
@@ -25,7 +27,7 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
   const category = useSelector((state: RootState) => state.Product.category);
   const product = useSelector((state: RootState) => state.Product.products);
   const cart = useSelector((state: RootState) => state.Product.cart);
-
+console.log(cart)
   const [swiper, setSwiper] = useState<any>(null);
   const [isLastSlide, setIsLastSlide] = useState(false);
 
@@ -62,6 +64,7 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
   };
 
   const handleAddToCart = (product: ProductsModels) => {
+    const mealType: MealType = product.meal.toLowerCase() as MealType; // Cast to MealType
     dispatch(addToCart(product));
     setCategorySelection((prev) => {
       const updatedSelection = {
@@ -115,7 +118,8 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
                     {product
                       ?.filter((pro: ProductsModels) => pro?.category == item?.Name)
                       ?.map((prodctItem: ProductsModels) => {
-                        const isActive = cart[prodctItem.meal.toLowerCase()].some((cartItem: ProductsModels) => cartItem.id === prodctItem.id);
+                        const mealType: MealType = prodctItem.meal.toLowerCase() as MealType; // Cast to MealType
+                        const isActive = cart[mealType].some((cartItem: ProductsModels) => cartItem.id === prodctItem.id);
                         return (
                           <div key={`${prodctItem?.id}-pro`} className={`flex flex-col w-[48%] cursor-pointer relative`} onClick={() => handleAddToCart(prodctItem)}>
                             {isActive && (

@@ -14,33 +14,16 @@ import { resetCart } from "@/app/store/slice/ProductSlice";
 import { getFromLocalStorage } from "@/app/utills/LocalStorageUtills";
 
 const ViewMeals: React.FC = () => {
-  const dispatch = useDispatch()
-  const router = useRouter()
+  const dispatch = useDispatch();
+  const router = useRouter();
   const [groupedByMeal, setGroupedByMeal] = useState<Record<string, ProductsModels[]>>({});
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: boolean }>({
     Tomorrow: false,
     Week: false,
     Staying: false,
   });
-  console.log(selectedOptions);
 
-  const summery = useSelector((state: RootState) => state.Product.cart);
-
-  useEffect(() => {
-    // Group products by meal type when summery changes
-    if (summery) {
-      const grouped = summery.reduce((acc: Record<string, ProductsModels[]>, product: ProductsModels) => {
-        const mealType = product.meal || "Unknown";
-        if (!acc[mealType]) {
-          acc[mealType] = [];
-        }
-        acc[mealType].push(product);
-        return acc;
-      }, {});
-      setGroupedByMeal(grouped);
-    }
-  }, [summery]);
-
+  const mealData = useSelector((state: RootState) => state.Product.cart);
   // Handle checkbox change
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
@@ -50,15 +33,13 @@ const ViewMeals: React.FC = () => {
   // Handle form submission
   const handleSubmit = async () => {
     try {
-     await setDoc(doc(db, "Orders", Date.now().toString()), {
-        body: {
-          sechudle:selectedOptions,
-          summery:summery,
-          location:getFromLocalStorage("location") ? getFromLocalStorage("location")?.address : null
-        },
+      await setDoc(doc(db, "Orders", Date.now().toString()), {
+        schedule: selectedOptions,
+        summary: mealData,
+        location: getFromLocalStorage("location") ? getFromLocalStorage("location")?.address : null,
       });
-      router.push("/online_ordering/thankyou")
-      dispatch(resetCart())
+      router.push("/online_ordering/thankyou");
+      dispatch(resetCart());
     } catch (error) {
       console.error("An error occurred", error);
     }
@@ -75,14 +56,15 @@ const ViewMeals: React.FC = () => {
         </div>
 
         {/* Render meals grouped by type */}
-        {Object.keys(groupedByMeal).length > 0 ? (
-          Object.keys(groupedByMeal).map((mealType) => (
+
+        {mealData && Object.keys(mealData).length > 0 ? (
+          Object.keys(mealData).map((mealType) => (
             <div key={mealType} className="pt-5">
-              <h1 className="text-white text-xl">{mealType}</h1>
-              {groupedByMeal[mealType].length > 0 ? (
-                groupedByMeal[mealType].map((item) => (
+              <h1 className="text-white text-xl">{mealType.charAt(0).toUpperCase() + mealType.slice(1)}</h1>
+              {mealData[mealType as keyof typeof mealData]?.length > 0 ? (
+                mealData[mealType as keyof typeof mealData].map((item: ProductsModels) => (
                   <div key={item.id} className="pt-3">
-                    <p className="text-white">{item.Description}</p>
+                    <p className="text-white">{item.Name}</p>
                   </div>
                 ))
               ) : (

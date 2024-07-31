@@ -3,14 +3,12 @@ import { getFromLocalStorage, setInLocalStorage } from "@/app/utills/LocalStorag
 import CategoryModels from "@/app/modal/CategoryModels";
 import { ProductsModels } from "@/app/modal/ProductModels";
 
+type MealType = 'breakfast' | 'lunch' | 'dinner';
+
 interface CartState {
   products: ProductsModels[];
   category: CategoryModels[];
-  cart: {
-    breakfast: ProductsModels[];
-    lunch: ProductsModels[];
-    dinner: ProductsModels[];
-  };
+  cart: Record<MealType, ProductsModels[]>; // Updated to use Record<MealType, ProductsModels[]>
 }
 
 const initialState: CartState = {
@@ -34,12 +32,15 @@ const ProductSlice = createSlice({
       state.category = action.payload;
     },
     addToCart: (state, action: PayloadAction<ProductsModels>) => {
-      const mealType = action.payload.meal.toLowerCase();
+      const mealType: MealType = action.payload.meal.toLowerCase() as MealType; // Cast to MealType
 
+      // Remove the product from the cart if it already exists
       state.cart[mealType] = state.cart[mealType].filter((item) => item.id !== action.payload.id);
 
+      // Add the new product to the cart
       state.cart[mealType].push(action.payload);
 
+      // Save cart data to localStorage
       setInLocalStorage('cartBreakfast', state.cart.breakfast);
       setInLocalStorage('cartLunch', state.cart.lunch);
       setInLocalStorage('cartDinner', state.cart.dinner);
