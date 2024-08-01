@@ -36,7 +36,7 @@ const ViewMeals: React.FC = () => {
       await setDoc(doc(db, "Orders", Date.now().toString()), {
         schedule: selectedOptions,
         summary: mealData,
-        location: getFromLocalStorage("location") ? getFromLocalStorage("location") : null,
+        info: getFromLocalStorage("location") ? getFromLocalStorage("location") : null,
       });
       router.push("/online_ordering/thankyou");
       dispatch(resetCart());
