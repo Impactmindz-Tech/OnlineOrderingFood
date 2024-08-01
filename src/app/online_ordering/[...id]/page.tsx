@@ -104,6 +104,17 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (swiper) {
+      swiper.on('slideChange', handleSlideChange);
+    }
+    return () => {
+      if (swiper) {
+        swiper.off('slideChange', handleSlideChange);
+      }
+    };
+  }, [swiper]);
+
   return (
     <>
       {loading && <Loading />}
@@ -115,7 +126,13 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
           <div className="">
             <button className="text-[#fff] bg-[#ded4c4] p-3 rounded-xl font-bold">Back</button>
           </div>
-          <Swiper autoHeight={true} modules={[Pagination]} pagination={{ clickable: true }} slidesPerView={1} onSwiper={(swiperInstance) => setSwiper(swiperInstance)} onSlideChange={handleSlideChange}>
+          <Swiper 
+            autoHeight={true} 
+            modules={[Pagination]} 
+            pagination={{ clickable: true }} 
+            slidesPerView={1} 
+            onSwiper={(swiperInstance) => setSwiper(swiperInstance)}
+            onSlideChange={handleSlideChange}>
             {category
               ?.filter((cat) => cat?.Category == params?.id)
               ?.map((item) => (
@@ -142,23 +159,23 @@ const SwiperSlider: React.FC<SwiperSliderProps> = ({ params }) => {
                           );
                         })}
                     </div>
-                    {isLastSlide && (
-                      <div className="bg-[#2f52a0] p-4 mt-5">
-                        {allCategoriesSelected() ? (
-                          <Link href={"/online_ordering/summery"}>
-                            <button>Order</button>
-                          </Link>
-                        ) : (
-                          <Link href={"/online_ordering/category"}>
-                            <button>Next</button>
-                          </Link>
-                        )}
-                      </div>
-                    )}
                   </div>
                 </SwiperSlide>
               ))}
           </Swiper>
+          {isLastSlide && (
+            <div className="bg-[#2f52a0] p-4 mt-5">
+              {allCategoriesSelected() ? (
+                <Link href={"/online_ordering/summery"}>
+                  <button className="w-full text-center text-white">Order</button>
+                </Link>
+              ) : (
+                <Link href={"/online_ordering/category"}>
+                  <button className="w-full text-center text-white">Next</button>
+                </Link>
+              )}
+            </div>
+          )}
         </div>
       </section>
     </>
