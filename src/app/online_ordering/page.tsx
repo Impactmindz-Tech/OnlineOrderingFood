@@ -13,9 +13,14 @@ import { useRouter } from "next/navigation";
 
 const OnlineOrdering: React.FC = () => {
   const router = useRouter();
+  const[showinput,setshowinput] = useState(false);
+  const[inputvalue,setinputvalue] = useState("");
   const [selectPosition, setSelectPosition] = useState<any>(null);
-  setInLocalStorage("location", selectPosition || null);
-  console.log(selectPosition, "tiridd");
+  let body = {
+    Name:inputvalue,
+    location:selectPosition
+  }
+  setInLocalStorage("location", body || null);
 
   const handleRoute = () => {
     if (selectPosition) {
@@ -46,7 +51,8 @@ const OnlineOrdering: React.FC = () => {
               <button className="text-2xl text-[#3E3939] font-semibold">Auto-Complete SelectBox</button>
               <SearchComponent selectPosition={selectPosition} setSelectPosition={setSelectPosition} />
             </div>
-            <p className="text-[#5663FF] text-xl font-bold text-center pt-3">I Rather use my Name</p>
+            <p role="button" className="text-[#5663FF] text-xl font-bold text-center pt-3" onClick={()=>setshowinput(!showinput)} >I Rather use my Name</p>
+           {showinput&&  <input type="text" placeholder="Enter the Name" className="p-3 outline-none border border-[#ccc] rounded-lg mt-2" onChange={(e)=>setinputvalue(e.target.value)}/>}
           </div>
           <div className="flex justify-center py-8 pt-32">
             <Image width={200} height={200} src={location_imgs} alt="onload img" />
